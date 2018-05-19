@@ -17,7 +17,7 @@ import (
 	kingpin "gopkg.in/alecthomas/kingpin.v2"
 )
 
-const namespace = ""
+const namespace = "ix2005"
 
 var (
 	up = prometheus.NewDesc(
