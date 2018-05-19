@@ -28,14 +28,16 @@ var (
 	temp = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, "", "temp"),
 		"The inside temperature of IX2005.",
-		nil, nil,
+		[]string{"target"}, nil,
 	)
 	memory = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, "", "memory"),
 		"The memory usage of IX2005.",
-		nil, nil,
+		[]string{"target"}, nil,
 	)
 )
+
+var targetURI *string
 
 // Exporter collects the metrics of NEC IX2005 from given web page.
 type Exporter struct {
@@ -94,7 +96,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 				return
 			}
 			ch <- prometheus.MustNewConstMetric(
-				memory, prometheus.GaugeValue, m,
+				memory, prometheus.GaugeValue, m, *targetURI,
 			)
 			for i := 0; i < 5; i++ {
 				z.Next()
@@ -107,7 +109,7 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 				return
 			}
 			ch <- prometheus.MustNewConstMetric(
-				temp, prometheus.GaugeValue, t,
+				temp, prometheus.GaugeValue, t, *targetURI,
 			)
 			return
 		}
@@ -124,7 +126,7 @@ func _main() int {
 }
 
 func exec() error {
-	targetURI := kingpin.Flag("ix2005.uri", "URI of target IX2005.").Default("192.168.1.1").String()
+	targetURI = kingpin.Flag("ix2005.uri", "URI of target IX2005.").Default("192.168.1.1").String()
 	listenAddr := kingpin.Flag("web.listen-address", "Address to listen on for web interface and telemetry.").Default(":9100").String()
 	metricsPath := kingpin.Flag("web.telemetry-path", "Path under which to expose metrics.").Default("/metrics").String()
 
