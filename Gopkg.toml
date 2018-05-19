@@ -20,3 +20,20 @@
 #  name = "github.com/x/y"
 #  version = "2.4.0"
 
+
+
+[[constraint]]
+  name = "github.com/prometheus/client_golang"
+  version = "0.8.0"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/prometheus/common"
+
+[[constraint]]
+  branch = "master"
+  name = "golang.org/x/net"
+
+[[constraint]]
+  name = "golang.org/x/text"
+  version = "0.3.0"
