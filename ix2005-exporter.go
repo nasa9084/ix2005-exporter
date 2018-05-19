@@ -26,7 +26,7 @@ var (
 		nil, nil,
 	)
 	temp = prometheus.NewDesc(
-		prometheus.BuildFQName(namespace, "", "temp"),
+		prometheus.BuildFQName(namespace, "", "inside_temperature"),
 		"The inside temperature of IX2005.",
 		[]string{"target"}, nil,
 	)
