@@ -23,7 +23,7 @@ var (
 	up = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, "", "up"),
 		"Was the last query of IX2005 successful.",
-		nil, nil,
+		[]string{"target"}, nil,
 	)
 	temp = prometheus.NewDesc(
 		prometheus.BuildFQName(namespace, "", "inside_temperature"),
@@ -77,6 +77,16 @@ func (e *Exporter) Collect(ch chan<- prometheus.Metric) {
 		log.Error(err)
 		return
 	}
+	if resp.StatusCode != 200 {
+		ch <- prometheus.MustNewConstMetric(
+			up, prometheus.GaugeValue, 0, *targetURI,
+		)
+		log.Errorf("cannot access to IX: %s", resp.Status)
+		return
+	}
+	ch <- prometheus.MustNewConstMetric(
+		up, prometheus.GaugeValue, 1, *targetURI,
+	)
 	z := html.NewTokenizer(transform.NewReader(resp.Body, japanese.EUCJP.NewDecoder()))
 	for {
 		tt := z.Next()
