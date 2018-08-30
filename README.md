@@ -1,7 +1,9 @@
 IX2005 Exporter
 ---------------
 
-Export NEC IX2005 status
+Export NEC IX2005 status.
+
+This exporter scrape data from web ui so you can use this when you cannot use SNMP. If you can use SNMP, you should use [SNMP Exporter](https://github.com/prometheus/snmp_exporter) instead.
 
 ## usage
 
